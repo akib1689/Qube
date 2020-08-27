@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Accordion?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Box?>
-
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import sample.Cube?>
+<?import java.lang.*?>
+<?import javafx.scene.SubScene?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SceneController">
    <left>
        <VBox prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
            <padding>
@@ -72,10 +66,10 @@
        </VBox>
    </left>
    <center>
-      <AnchorPane fx:id="center" focusTraversable="true" prefHeight="200.0" prefWidth="200.0" scaleShape="false" style="-fx-border-color: black; -fx-background-color: gray" BorderPane.alignment="CENTER">
-         <children>
+      <AnchorPane fx:id="center" focusTraversable="true" prefHeight="-Infinity" prefWidth="-Infinity" scaleShape="false" BorderPane.alignment="CENTER">
+          <children>
 
-         </children>
+          </children>
       </AnchorPane>
    </center>
 </BorderPane>

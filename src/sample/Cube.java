@@ -4,9 +4,6 @@ import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Cylinder;
 import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
@@ -20,21 +17,6 @@ public class Cube {
 
 
     public Cube() {
-        /*x_.setTranslateX(-150);
-        y_.setTranslateY(-150);
-        z_.setTranslateZ(-150);*/
-        Rotate t = new Rotate(90,Rotate.Y_AXIS);
-        Cylinder z_ = new Cylinder(5, 300);
-        z_.getTransforms().add(t);
-        z_.setMaterial(new PhongMaterial(Color.BLUE));
-        t=new Rotate(90,Rotate.X_AXIS);
-        Cylinder y_ = new Cylinder(5, 300);
-        y_.getTransforms().add(t);
-        y_.setMaterial(new PhongMaterial(Color.RED));
-        t = new Rotate(90,Rotate.Z_AXIS);
-        Cylinder x_ = new Cylinder(5, 300);
-        x_.getTransforms().add(t);
-        x_.setMaterial(new PhongMaterial(Color.GREEN));
         for (int i=-1;i<=1;i++){
             for (int j=-1;j<=1;j++){
                 for (int k=-1;k<=1;k++){
@@ -44,7 +26,7 @@ public class Cube {
                 }
             }
         }
-        cube.getChildren().addAll(x_, y_, z_);
+        cube.setFocusTraversable(true);
     }
 
     public Group getCube() {
@@ -133,5 +115,10 @@ public class Cube {
         ans[0] = -b;
         ans[1] = a;
         return ans;
+    }
+
+
+    public void focus() {
+        this.cube.requestFocus();
     }
 }

@@ -1,7 +1,5 @@
 package sample;
 
-import javafx.animation.Animation;
-import javafx.animation.Timeline;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -18,11 +16,7 @@ public class Piece {
     private Point3D x_axis = Rotate.X_AXIS;
     private Point3D y_axis = Rotate.Y_AXIS;
     private Point3D z_axis = Rotate.Z_AXIS;
-
     private Transform t = new Rotate();
-
-    private Timeline transition = null;
-
     public Piece(int x, int y, int z) {
         this.x=x;
         this.y=y;
@@ -34,7 +28,7 @@ public class Piece {
         r.setHeight(50);
         r.setWidth(50);
         r.setStyle("-fx-stroke: black");
-        r.setFill(Color.GREEN);
+        r.setFill(Color.BLUE);
         cubits.getChildren().add(r);
 
         r = new Rectangle();
@@ -67,7 +61,7 @@ public class Piece {
         r.setHeight(50);
         r.setWidth(50);
         r.setStyle("-fx-stroke: black");
-        r.setFill(Color.BLUE);
+        r.setFill(Color.GREEN);
         cubits.getChildren().add(r);
 
         r = new Rectangle();
@@ -106,11 +100,9 @@ public class Piece {
         return x;
     }
 
-
     public int getY() {
         return y;
     }
-
 
     public int getZ() {
         return z;
@@ -144,37 +136,7 @@ public class Piece {
             z_axis = fac.transform(z_axis);
             y_axis = fac.transform(y_axis);
         }
-
         cubits.getTransforms().clear();
         cubits.getTransforms().add(t);
-
     }
-
-    public boolean getStatus(){
-        if (transition == null){
-            return true;
-        }
-        return this.transition.getStatus() != Animation.Status.RUNNING;
-    }
-
-    public void rotateTransition(int ang, Point3D axis){
-        if(transition != null && transition.getStatus().equals(Animation.Status.RUNNING)){
-            return;
-        }
-        double x = cubits.getTranslateX();
-        double y= cubits.getTranslateY();
-        double z = cubits.getTranslateZ();
-        /*
-        transition = new RotateTransition(Duration.seconds(1),cubits);
-        transition.setAxis(axis);
-        transition.setByAngle(ang);
-        transition.play();
-        transition.setOnFinished(event -> {
-            System.out.println("X=" + x + "->" +cubits.getTranslateX());
-            System.out.println("Y=" + y + "->" +cubits.getTranslateY());
-            System.out.println("Z=" + z + "->" +cubits.getTranslateZ());
-
-        });*/
-    }
-
 }
