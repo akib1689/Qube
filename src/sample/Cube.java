@@ -9,11 +9,13 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Cube {
     private final Group cube = new Group();
     private final ArrayList<Piece> pieces = new ArrayList<>();
     private RotateTransition transition =new RotateTransition();
+    private final List<Character> serial = new ArrayList<>();
 
 
     public Cube() {
@@ -83,7 +85,7 @@ public class Cube {
         }
         cube.getChildren().add(grp);
 
-        transition = new RotateTransition(Duration.seconds(1),grp);
+        transition = new RotateTransition(Duration.millis(700),grp);
         transition.setByAngle(angle);
         transition.setAxis(axis);
         transition.play();
@@ -100,6 +102,7 @@ public class Cube {
                 }
             }
             cube.getChildren().remove(grp);
+            this.checkList();
         });
 
     }
@@ -116,9 +119,64 @@ public class Cube {
         ans[1] = a;
         return ans;
     }
-
+    private void checkList(){
+        if (!serial.isEmpty()){
+            int x=0;
+            char ex = serial.get(0);
+            serial.remove(0);
+            switch (ex){
+                case 'f':
+                    this.rotate(90,1,Rotate.X_AXIS);
+                    break;
+                case 'F':
+                    this.rotate(-90,1,Rotate.X_AXIS);
+                    break;
+                case 'b':
+                    this.rotate(90,-1,Rotate.X_AXIS);
+                    break;
+                case 'B':
+                    this.rotate(-90,-1,Rotate.X_AXIS);
+                    break;
+                case 'u':
+                    this.rotate(90,1,Rotate.Y_AXIS);
+                    break;
+                case 'U':
+                    this.rotate(-90,1,Rotate.Y_AXIS);
+                    break;
+                case 'd':
+                    this.rotate(90,-1,Rotate.Y_AXIS);
+                    break;
+                case 'D':
+                    this.rotate(-90,-1,Rotate.Y_AXIS);
+                    break;
+                case 'l':
+                    this.rotate(90,1,Rotate.Z_AXIS);
+                    break;
+                case 'L':
+                    this.rotate(-90,1,Rotate.Z_AXIS);
+                    break;
+                case 'r':
+                    this.rotate(90,-1,Rotate.Z_AXIS);
+                    break;
+                case 'R':
+                    this.rotate(-90,-1,Rotate.Z_AXIS);
+                    break;
+            }
+        }
+    }
 
     public void focus() {
         this.cube.requestFocus();
     }
+
+    public void scramble(){
+        int size = (int) (Math.random()*10) + 5;
+        char[] library = {'f','F','b','B','l','L','r','R','u','U','d','D'};
+        for (int i=0;i<size;i++){
+            int idx = (int) (Math.random()*12);
+            serial.add(library[idx]);
+        }
+        this.checkList();
+    }
+
 }

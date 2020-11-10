@@ -1,14 +1,10 @@
 package sample;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point3D;
-import javafx.scene.Group;
-import javafx.scene.PerspectiveCamera;
-import javafx.scene.SceneAntialiasing;
-import javafx.scene.SubScene;
+import javafx.scene.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.transform.Rotate;
@@ -23,17 +19,11 @@ public class SceneController implements Initializable {
     private AnchorPane center;
 
 
-
-
     Transform t=new Rotate();
 
     Cube cube = new Cube();
 
     private double anchorX,anchorY;
-    private double anchorAngleX = 0;
-    private double anchorAngleY = 0;
-    private final DoubleProperty angleX = new SimpleDoubleProperty(0);
-    private final DoubleProperty angleY = new SimpleDoubleProperty(0);
     private Point3D xAxis = Rotate.X_AXIS;
     private Point3D yAxis = Rotate.Y_AXIS;
     private Point3D zAxis = Rotate.Z_AXIS;
@@ -56,33 +46,35 @@ public class SceneController implements Initializable {
     }
 
     private void initMouse(Cube cube) {
-        Rotate xRotate = new Rotate(0,Rotate.X_AXIS);
-        Rotate yRotate = new Rotate(0,Rotate.Y_AXIS);
-
-        cube.getCube().getTransforms().addAll(xRotate,yRotate);
-
-        xRotate.angleProperty().bind(angleX);
-        yRotate.angleProperty().bind(angleY);
-
-
 
         cube.getCube().setOnMousePressed(event -> {
             cube.focus();
             anchorX = event.getSceneX();
             anchorY = event.getSceneY();
-            anchorAngleX = angleX.get();
-            anchorAngleY = angleY.get();
         });
 
         cube.getCube().setOnMouseDragged(event -> {
-            angleX.set(anchorAngleX - (anchorY - event.getSceneY()));
-            angleY.set(anchorAngleY + anchorX - event.getSceneX());
-            xAxis = xRotate.transform(Rotate.X_AXIS);
-            xAxis = yRotate.transform(Rotate.X_AXIS);
-            yAxis = xRotate.transform(Rotate.Y_AXIS);
-            yAxis = yRotate.transform(Rotate.Y_AXIS);
-            zAxis = xRotate.transform(Rotate.Z_AXIS);
-            zAxis = yRotate.transform(Rotate.Z_AXIS);
+
+            double delX = event.getSceneX()-anchorX;
+            double delY = event.getSceneY()-anchorY;
+
+            delX = delX/(((Node)event.getSource()).getScene().getWidth())*360;
+            delY = delY/(((Node)event.getSource()).getScene().getHeight())*360;
+
+            Rotate rx = new Rotate(delX,Rotate.Y_AXIS);
+            Rotate ry = new Rotate(delY,Rotate.X_AXIS);
+            t = t.createConcatenation(rx);
+            t = t.createConcatenation(ry);
+            this.cube.getCube().getTransforms().clear();
+            this.cube.getCube().getTransforms().add(t);
+
+
+            xAxis = t.transform(Rotate.X_AXIS);
+            yAxis = t.transform(Rotate.Y_AXIS);
+            zAxis = t.transform(Rotate.Z_AXIS);
+
+            anchorX = event.getSceneX();
+            anchorY = event.getSceneY();
         });
         
     }
@@ -103,61 +95,61 @@ public class SceneController implements Initializable {
             //
             switch (event.getCode()){
                 case R:
-                    flag = getLayer(1,Rotate.X_AXIS);
+                    flag = getLayer(Rotate.X_AXIS);
                     this.cube.rotate(90 * flag,flag,getAxis(Rotate.X_AXIS));
                     break;
                 case L:
-                    flag = getLayer(1,Rotate.X_AXIS);
+                    flag = getLayer(Rotate.X_AXIS);
                     this.cube.rotate(90*flag,-1*flag,getAxis(Rotate.X_AXIS));
                     break;
-                case U:
-                    flag = getLayer(1,Rotate.Y_AXIS);
+                case D:
+                    flag = getLayer(Rotate.Y_AXIS);
                     this.cube.rotate(90*flag,flag,getAxis(Rotate.Y_AXIS));
                     break;
-                case D:
-                    flag = getLayer(1,Rotate.Y_AXIS);
+                case U:
+                    flag = getLayer(Rotate.Y_AXIS);
                     this.cube.rotate(90*flag,-1*flag,getAxis(Rotate.Y_AXIS));
                     break;
                 case B:
-                    flag = getLayer(1,Rotate.Z_AXIS);
+                    flag = getLayer(Rotate.Z_AXIS);
                     this.cube.rotate(90*flag,flag,getAxis(Rotate.Z_AXIS));
                     break;
                 case F:
-                    flag = getLayer(1,Rotate.Z_AXIS);
+                    flag = getLayer(Rotate.Z_AXIS);
                     this.cube.rotate(90*flag,-1*flag,getAxis(Rotate.Z_AXIS));
                     break;
             }
         }else {
             switch (event.getCode()){
-                case L:
-                    flag = getLayer(1,Rotate.X_AXIS);
+                case R:
+                    flag = getLayer(Rotate.X_AXIS);
                     this.cube.rotate(-90 * flag,flag,getAxis(Rotate.X_AXIS));
                     break;
-                case R:
-                    flag = getLayer(1,Rotate.X_AXIS);
+                case L:
+                    flag = getLayer(Rotate.X_AXIS);
                     this.cube.rotate(-90*flag,-1*flag,getAxis(Rotate.X_AXIS));
                     break;
-                case U:
-                    flag = getLayer(1,Rotate.Y_AXIS);
+                case D:
+                    flag = getLayer(Rotate.Y_AXIS);
                     this.cube.rotate(-90*flag,flag,getAxis(Rotate.Y_AXIS));
                     break;
-                case D:
-                    flag = getLayer(1,Rotate.Y_AXIS);
+                case U:
+                    flag = getLayer(Rotate.Y_AXIS);
                     this.cube.rotate(-90*flag,-1*flag,getAxis(Rotate.Y_AXIS));
                     break;
                 case B:
-                    flag = getLayer(1,Rotate.Z_AXIS);
+                    flag = getLayer(Rotate.Z_AXIS);
                     this.cube.rotate(-90*flag,flag,getAxis(Rotate.Z_AXIS));
                     break;
                 case F:
-                    flag = getLayer(1,Rotate.Z_AXIS);
+                    flag = getLayer(Rotate.Z_AXIS);
                     this.cube.rotate(-90*flag,-1*flag,getAxis(Rotate.Z_AXIS));
                     break;
             }
         }
     }
 
-    private int getLayer(int layer,Point3D axis){
+    private int getLayer(Point3D axis){
         double xAngle = this.xAxis.angle(axis);
         double yAngle = this.yAxis.angle(axis);
         double zAngle = this.zAxis.angle(axis);
@@ -181,13 +173,13 @@ public class SceneController implements Initializable {
         }
 
         if (xAngle <yAngle && xAngle < zAngle){
-            return xFlag? layer: -1*layer;
+            return xFlag? 1 : -1;
         }
         if (yAngle < xAngle && yAngle<zAngle){
-            return yFlag? layer: -1*layer;
+            return yFlag? 1 : -1;
         }
 
-        return zFlag? layer: -1*layer;
+        return zFlag? 1 : -1;
     }
 
 
@@ -217,4 +209,8 @@ public class SceneController implements Initializable {
         return Rotate.Z_AXIS;
     }
 
+
+    public void scramblePressed(ActionEvent event) {
+        cube.scramble();
+    }
 }

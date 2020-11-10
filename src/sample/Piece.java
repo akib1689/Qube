@@ -49,7 +49,7 @@ public class Piece {
         r.setHeight(50);
         r.setWidth(50);
         r.setStyle("-fx-stroke: black");
-        r.setFill(Color.ORANGE);
+        r.setFill(Color.DARKORANGE);
         rot = new Rotate(90,Rotate.Y_AXIS);
         r.getTransforms().add(rot);
         cubits.getChildren().add(r);
